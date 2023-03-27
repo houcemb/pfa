@@ -12,6 +12,7 @@ public class PerformanceReview {
     private Integer performanceReview;
     @ManyToOne
     Employee employee;
-
+    @ManyToOne
+    Admin admin;
 
 }

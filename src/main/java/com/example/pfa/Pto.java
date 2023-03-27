@@ -14,6 +14,8 @@ public class Pto {
     private String description;
     private Date startDate;
     private Date endDate;
+    @ManyToOne
+    Admin admin;
 
 
 }

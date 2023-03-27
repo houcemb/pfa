@@ -4,6 +4,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Payroll {
@@ -14,5 +15,10 @@ public class Payroll {
     private  Date date;
     private double amount;
     private double taxes;
+    @ManyToOne
+    Admin admin;
+    @OneToMany (mappedBy = "payroll")
+    private List<Attendance> attendanceList;
+
 
 }
