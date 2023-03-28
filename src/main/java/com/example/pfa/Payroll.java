@@ -14,7 +14,7 @@ public class Payroll {
     private Integer payrollId;
 
     public Payroll() {
-        
+
     }
 
     public Integer getPayrollId() {
