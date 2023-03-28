@@ -1,3 +1,6 @@
+package com.example.pfa;
+
+import com.example.pfa.Admin;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;

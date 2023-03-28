@@ -1,3 +1,5 @@
+package com.example.pfa;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -11,15 +13,15 @@ public class Admin {
     private String adminName;
     private String adminPassword;
     private String adminMailAddress;
-    @OneToMany(mappedBy = "Admin")
+    @OneToMany(mappedBy = "admin")
 
 
     private List<TaxFormGeneration> taxFormGenera;
-    @OneToMany(mappedBy = "Admin")
+    @OneToMany(mappedBy = "admin")
     private List<Payroll> payrollList;
-    @OneToMany(mappedBy = "Admin")
+    @OneToMany(mappedBy = "admin")
     private List<PerformanceReview> performance;
-    @OneToMany(mappedBy = "Admin")
+    @OneToMany(mappedBy = "admin")
     private List<Pto> ptoList;
 
 

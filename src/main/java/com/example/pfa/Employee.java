@@ -1,3 +1,5 @@
+package com.example.pfa;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -15,13 +17,13 @@ public class Employee {
     private Date terminationDate;
     private String department;
     private String postion;
-    @OneToMany(mappedBy = "Employee")
+    @OneToMany(mappedBy = "employee")
     private List<Attendance> attendances;
-    @OneToMany(mappedBy = "Employee")
+    @OneToMany(mappedBy = "employee")
     private List<PerformanceReview> performanceReviewList;
-    @OneToMany(mappedBy = "Employee")
+    @OneToMany(mappedBy = "employee")
     private List<Payroll> payrollList;
-    @OneToMany(mappedBy = "Employee")
+    @OneToMany(mappedBy = "employee")
     private List<Pto> ptoList ;
 
     public Employee(Integer id, String name, String email, String password, Date hireDate, Date terminationDate, String department, String postion) {

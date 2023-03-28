@@ -1,3 +1,5 @@
+package com.example.pfa;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 
