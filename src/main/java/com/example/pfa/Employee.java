@@ -26,6 +26,17 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private List<Pto> ptoList ;
 
+    public Employee(Integer id, String name, String email, String password, Date hireDate, String department, String postion, List<Payroll> payrollList) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.hireDate = hireDate;
+        this.department = department;
+        this.postion = postion;
+        this.payrollList = payrollList;
+    }
+
     public Employee(Integer id, String name, String email, String password, Date hireDate, Date terminationDate, String department, String postion) {
         this.id = id;
         this.name = name;

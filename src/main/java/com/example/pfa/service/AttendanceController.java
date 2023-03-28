@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class AttendanceController {
     @Autowired
     private AttendanceRepository attendanceRepository;
- @Autowired
+    @Autowired
     private EmployeeRepository employeeRepository;
 
     @PostMapping("/logEnter")
@@ -55,17 +55,13 @@ public class AttendanceController {
     public List<Attendance> getAttendanceByDate(LocalDate date) {
         return attendanceRepository.findByAttendanceDate(date);
     }
-}
-I
 
-
-
-
-
-
-
-@GetMapping("/list")
+    @GetMapping("/list")
     public List<Attendance> list() {
         return attendanceRepository.findAll();
     }
 }
+
+
+
+
