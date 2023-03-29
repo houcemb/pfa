@@ -1,14 +1,13 @@
 package com.example.pfa;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.List;
 @Entity
 public class Employee {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private  Integer id;
     private String  name;
     private String  email;

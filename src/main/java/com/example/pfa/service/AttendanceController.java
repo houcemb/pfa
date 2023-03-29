@@ -29,22 +29,29 @@ public class AttendanceController {
         Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
         Employee employee = optionalEmployee.orElseThrow(() -> new RuntimeException("Employee not found"));
         attendance.setEmployee(employee);
-        attendance.setInTime(new Timestamp(System.currentTimeMillis()));
+        Date date = new Date();
+        LocalDate date1 =  LocalDate.now();
+        attendance.setInTime(new Timestamp(date.getTime()));
+        attendance.setAttendanceDate(date1);
+
         attendanceRepository.save(attendance);
     }
 
     @PostMapping("/logExit")
     public void logExit(int employeeId) {
         // Get the current date and time
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
 
         // Find the attendance record for the current date
-        Optional<Attendance> optionalAttendance = attendanceRepository.findByEmployeeIdAndAttendanceDate(employeeId, LocalDate.now());
+        Optional<Attendance> optionalAttendance = attendanceRepository.findByEmployeeIdAndAttendanceDate(employeeId, now);
 
         if (optionalAttendance.isPresent()) {
             // Update the exit time for the existing attendance record
+            Date date = new Date();
+            LocalDate date1 =  LocalDate.now();
+
             Attendance attendance = optionalAttendance.get();
-            attendance.setOutTime(Timestamp.valueOf(now));
+            attendance.setOutTime(new Timestamp(date.getTime()));
             attendanceRepository.save(attendance);
         } else {
             // Attendance record not found for the current date
@@ -52,7 +59,7 @@ public class AttendanceController {
         }
     }
 
-    public List<Attendance> getAttendanceByDate(LocalDate date) {
+    public List<Attendance> getAttendanceByDate(Date date) {
         return attendanceRepository.findByAttendanceDate(date);
     }
 

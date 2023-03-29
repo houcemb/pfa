@@ -1,8 +1,6 @@
 package com.example.pfa;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -10,9 +8,10 @@ import java.time.LocalDate;
 @Entity
 public class Attendance {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer attendanceId;
     private LocalDate attendanceDate;
-    private String status;
+
     private Timestamp inTime;
     private Timestamp outTime;
     @ManyToOne
@@ -37,13 +36,7 @@ public class Attendance {
         this.attendanceDate = attendanceDate;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Timestamp getInTime() {
         return inTime;
