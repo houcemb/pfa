@@ -8,7 +8,7 @@ import java.util.List;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  Integer id;
+    private  Integer employeeId;
     private String  name;
     private String  email;
     private String  password;
@@ -16,17 +16,17 @@ public class Employee {
     private Date terminationDate;
     private String department;
     private String postion;
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL)
     private List<Attendance> attendances;
     @OneToMany(mappedBy = "employee")
     private List<PerformanceReview> performanceReviewList;
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Payroll> payrollList;
     @OneToMany(mappedBy = "employee")
     private List<Pto> ptoList ;
 
     public Employee(Integer id, String name, String email, String password, Date hireDate, String department, String postion, List<Payroll> payrollList) {
-        this.id = id;
+        this.employeeId = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -37,7 +37,7 @@ public class Employee {
     }
 
     public Employee(Integer id, String name, String email, String password, Date hireDate, Date terminationDate, String department, String postion) {
-        this.id = id;
+        this.employeeId = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -48,7 +48,7 @@ public class Employee {
     }
 
     public Employee(Integer id, String name, String email, String password, Date hireDate, String department, String postion) {
-        this.id = id;
+        this.employeeId = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -61,11 +61,11 @@ public class Employee {
     }
 
     public Integer getId() {
-        return id;
+        return employeeId;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.employeeId = id;
     }
 
     public String getName() {

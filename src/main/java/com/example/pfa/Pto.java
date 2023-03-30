@@ -1,8 +1,6 @@
 package com.example.pfa;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -10,12 +8,23 @@ import java.util.Date;
 
 public class Pto {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer ptoId;
     @ManyToOne
     private Employee employee;
     private String description;
     private Date startDate;
     private Date endDate;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @ManyToOne
     Admin admin;
 
@@ -30,7 +39,14 @@ public class Pto {
         this.endDate = endDate;
         this.admin = admin;
     }
+    public Pto(Integer ptoId, Employee employee, String description, Date startDate, Date endDate) {
+        this.ptoId = ptoId;
+        this.employee = employee;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
 
+    }
     public Integer getPtoId() {
         return ptoId;
     }
