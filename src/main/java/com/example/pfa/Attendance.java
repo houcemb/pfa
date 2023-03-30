@@ -82,4 +82,25 @@ public class Attendance {
     private Admin admin;
     @ManyToOne
     private Payroll payroll;
+    public double getHoursWorked() {
+        if (inTime == null || outTime == null) {
+            return 0.0;
+        }
+
+        long diff = outTime.getTime() - inTime.getTime();
+        return (double) diff / (1000 * 60 * 60)-1;
+    }
+
+    public double getOvertimeHours() {
+        if (inTime == null || outTime == null) {
+            return 0.0;
+        }
+
+        double hours = getHoursWorked();
+        if (hours <= 8.0) {
+            return 0.0;
+        }
+
+        return hours - 8.0;
+    }
 }

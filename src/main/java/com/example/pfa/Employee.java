@@ -25,6 +25,15 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private List<Pto> ptoList ;
 
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+
+    private double baseSalary;
     public Employee(Integer id, String name, String email, String password, Date hireDate, String department, String postion, List<Payroll> payrollList) {
         this.employeeId = id;
         this.name = name;
@@ -34,6 +43,46 @@ public class Employee {
         this.department = department;
         this.postion = postion;
         this.payrollList = payrollList;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public List<Attendance> getAttendances() {
+        return attendances;
+    }
+
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
+    }
+
+    public List<PerformanceReview> getPerformanceReviewList() {
+        return performanceReviewList;
+    }
+
+    public void setPerformanceReviewList(List<PerformanceReview> performanceReviewList) {
+        this.performanceReviewList = performanceReviewList;
+    }
+
+    public List<Payroll> getPayrollList() {
+        return payrollList;
+    }
+
+    public void setPayrollList(List<Payroll> payrollList) {
+        this.payrollList = payrollList;
+    }
+
+    public List<Pto> getPtoList() {
+        return ptoList;
+    }
+
+    public void setPtoList(List<Pto> ptoList) {
+        this.ptoList = ptoList;
     }
 
     public Employee(Integer id, String name, String email, String password, Date hireDate, Date terminationDate, String department, String postion) {
