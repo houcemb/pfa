@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -96,35 +97,75 @@ public class Payroll {
 
     // Other properties and methods omitted for brevity
 
-    public double calculateSalary(LocalDate startDate, LocalDate endDate) {
+    public double calculateGrossSalary(LocalDate startDate, LocalDate endDate) {
 
         double baseSalary = employee.getBaseSalary();
         double totalHoursWorked = 0.0;
         double totalExtraHours = 0.0;
         double totalMissingHours = 0.0;
+        //calculate total working days for the month
 
-        for (Attendance attendance : employee.getAttendances()) {
+        int workingDays = 0;
+
+        int daysInMonth = startDate.lengthOfMonth();
+
+        for (int i = 1; i <= daysInMonth; i++) {
+            DayOfWeek dayOfWeek = startDate.withDayOfMonth(i).getDayOfWeek();
+            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+                workingDays++;
+            }
+        }
+        int attendanceSize = attendanceList.size();
+
+        for (Attendance attendance : attendanceList) {
             LocalDate attendanceDate = attendance.getAttendanceDate();
             if (attendanceDate.isAfter(startDate.minusDays(1)) && attendanceDate.isBefore(endDate.plusDays(1))) {
                 double hoursWorked = attendance.getHoursWorked();
                 double extraHours = attendance.getOvertimeHours();
-                double missingHours =0;
-                if(hoursWorked<8){
-                 missingHours = 8 - hoursWorked;}
+                double missingHours = 0;
+                if (hoursWorked < 8) {
+                    missingHours = 8 - hoursWorked;
+                }
 
                 totalHoursWorked += hoursWorked;
                 totalExtraHours += extraHours;
                 totalMissingHours += missingHours;
             }
         }
+
         double hourRate = baseSalary / 170;
         double salary = employee.getBaseSalary();
-        salary += (hourRate*1.5 * totalExtraHours);
-        salary -=  hourRate* totalMissingHours;
+        salary -= (workingDays - attendanceSize) * 8 * hourRate;
+        salary += (hourRate * 1.5 * totalExtraHours);
+        salary -= hourRate * totalMissingHours;
 
         return salary;
     }
 
+    public static double calculateNetSalary(double grossSalary) {
+        // Calculate social security contributions
+        double socialSecurity = grossSalary * 0.09;
+
+        // Calculate health insurance
+        double healthInsurance = grossSalary * 0.01;
+
+        // Calculate income tax
+        double taxableIncome = grossSalary - socialSecurity - healthInsurance;
+        double incomeTax;
+        if (taxableIncome <= 5000) {
+            incomeTax = 0;
+        } else if (taxableIncome <= 25000) {
+            incomeTax = (taxableIncome - 5000) * 0.15;
+        } else if (taxableIncome <= 50000) {
+            incomeTax = (taxableIncome - 25000) * 0.25 + 3000;
+        } else {
+            incomeTax = (taxableIncome - 50000) * 0.35 + 10500;
+        }
+
+        // Calculate net salary
+
+        return grossSalary - socialSecurity - healthInsurance - incomeTax;
+    }
 }
 
 

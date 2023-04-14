@@ -1,29 +1,39 @@
 package com.example.pfa;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
 @Entity
-public class Employee {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Employee implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  Integer employeeId;
-    private String  name;
-    private String  email;
-    private String  password;
+    private Integer employeeId;
+    private String name;
+    private String email;
+    @ManyToOne
+    @JoinColumn(name = "supervisor_id")
+    private SuperVisor supervisor;
+    private String password;
     private Date hireDate;
     private Date terminationDate;
     private String department;
     private String postion;
-    @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Attendance> attendances;
     @OneToMany(mappedBy = "employee")
     private List<PerformanceReview> performanceReviewList;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Payroll> payrollList;
     @OneToMany(mappedBy = "employee")
-    private List<Pto> ptoList ;
+    private List<Pto> ptoList;
 
     public double getBaseSalary() {
         return baseSalary;
@@ -34,6 +44,7 @@ public class Employee {
     }
 
     private double baseSalary;
+
     public Employee(Integer id, String name, String email, String password, Date hireDate, String department, String postion, List<Payroll> payrollList) {
         this.employeeId = id;
         this.name = name;
@@ -133,8 +144,41 @@ public class Employee {
         this.email = email;
     }
 
+    @Override
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_EMPLOYEE"));
+
+
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     public void setPassword(String password) {

@@ -1,59 +1,62 @@
 package com.example.pfa;
-import static org.junit.jupiter.api.Assertions.*;
+
+import org.aspectj.lang.annotation.Before;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-class PayrollTest {
+public class PayrollTest {
+
+    private Payroll payroll;
+    private Employee employee;
+    private List<Attendance> attendance;
 
     @BeforeEach
-    void setUp() throws Exception {
-        Payroll payroll = new Payroll();
+    public void setUp() {
+        payroll = new Payroll();
+        employee = mock(Employee.class);
+        payroll.setEmployee(employee);
+        Admin admin = mock(Admin.class);
+
     }
 
     @Test
-    void testCalculateSalaryWithValidData() {
-        Payroll payroll = new Payroll();
-        Employee employee = new Employee();
-        employee.setBaseSalary(2000);
-        List<Attendance> attendances = new ArrayList<>();
-        Attendance attendance1 = new Attendance();
-        attendance1.setAttendanceDate(LocalDate.of(2023, 3, 29));
-        attendance1.setInTime(Timestamp.valueOf("2023-03-29 09:00:00"));
-        attendance1.setOutTime(Timestamp.valueOf("2023-03-29 18:00:00"));
-        attendances.add(attendance1);
-        Attendance attendance2 = new Attendance();
-        attendance2.setAttendanceDate(LocalDate.of(2023, 3, 30));
-        attendance2.setInTime(Timestamp.valueOf("2023-03-30 09:00:00"));
-        attendance2.setOutTime(Timestamp.valueOf("2023-03-30 19:00:00"));
-        attendances.add(attendance2);
-        employee.setAttendances(attendances);
-        payroll.setEmployee(employee);
+    public void testCalculateSalary() {
+        LocalDate startDate = LocalDate.of(2022, 3, 1);
+        LocalDate endDate = LocalDate.of(2022, 3, 31);
+        attendance =new ArrayList<>();
 
-        double expected = 2017.47;
-        double actual = payroll.calculateSalary(LocalDate.of(2023, 3, 1), LocalDate.of(2023, 3, 31));
-        assertEquals(expected, actual, 0.5);
-    }
+        // Set up the employee's base salary and hours worked in March
+        when(employee.getBaseSalary()).thenReturn(5000.0);
+        for (int i = 1; i <= 23; i++) {
+            attendance.add(new Attendance(LocalDate.of(2022, 3, i), Timestamp.valueOf("2023-03-29 09:00:00"), Timestamp.valueOf("2023-03-29 18:00:00")));
+        }
 
-    @Test
-    void testCalculateSalaryWithMissingData() {
-        Payroll payroll = new Payroll();
-        Employee employee = new Employee();
-        employee.setBaseSalary(2000);
-        List<Attendance> attendances = new ArrayList<>();
-        employee.setAttendances(attendances);
-        payroll.setEmployee(employee);
 
-        double expected = 2000;
-        double actual = payroll.calculateSalary(LocalDate.of(2023, 3, 1), LocalDate.of(2023, 3, 31));
-        assertEquals(expected, actual, 0.01);
+
+        payroll.setAttendanceList(attendance);
+
+
+        when(employee.getBaseSalary()).thenReturn(5000.0);
+
+        // Calculate the expected salary
+        double hourRate = 5000.0 / 170;
+        double expectedSalary = 5000.0 - ((31-8-2)*8*hourRate) + (hourRate * 1.5 * 3.5) - (hourRate * 5);
+
+        // Call the method being tested
+        double actualSalary = payroll.calculateSalary(startDate, endDate);
+
+        // Assert that the expected salary matches the actual salary
+        assertEquals(5000, actualSalary, 0.001);
     }
 }

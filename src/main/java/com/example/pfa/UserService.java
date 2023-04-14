@@ -1,2 +1,7 @@
-package com.example.pfa;public class UserService {
+package com.example.pfa;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
 }

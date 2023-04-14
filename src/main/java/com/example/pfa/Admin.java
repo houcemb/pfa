@@ -3,11 +3,16 @@ package com.example.pfa;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
-public class Admin {
+public class Admin implements UserDetails {
     @Id
     private Integer adminId;
     private String adminName;
@@ -100,4 +105,39 @@ public class Admin {
     private List<Pto> ptoList;
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+    }
+
+    @Override
+    public String getPassword() {
+        return adminPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return adminMailAddress;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

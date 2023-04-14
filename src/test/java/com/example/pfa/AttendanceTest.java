@@ -55,4 +55,14 @@ class AttendanceTest {
         double actual = attendance.getOvertimeHours();
         assertEquals(expected, actual, 0.001);
     }
+    @Test
+    void testGetOvertimeHoursWithNoOvertime() {
+        Timestamp inTime = Timestamp.valueOf("2023-03-30 09:00:00");
+        Timestamp outTime = Timestamp.valueOf("2023-03-30 18:00:00");
+        attendance.setInTime(inTime);
+        attendance.setOutTime(outTime);
+        double expected = 0.0;
+        double actual = attendance.getOvertimeHours();
+        assertEquals(expected, actual, 0.001);
+    }
 }

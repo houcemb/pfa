@@ -20,6 +20,12 @@ public class Attendance {
     public Attendance() {
     }
 
+    public Attendance(LocalDate attendanceDate, Timestamp inTime, Timestamp outTime) {
+        this.attendanceDate = attendanceDate;
+        this.inTime = inTime;
+        this.outTime = outTime;
+    }
+
     public Integer getAttendanceId() {
         return attendanceId;
     }
