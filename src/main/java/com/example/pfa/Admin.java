@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -106,12 +107,6 @@ public class Admin implements UserDetails {
 
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"));
-
-    }
-
-    @Override
     public String getPassword() {
         return adminPassword;
     }
@@ -134,6 +129,19 @@ public class Admin implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return false;
+    }
+
+    public Admin(String adminName, String adminPassword, String adminMailAddress) {
+        this.adminName = adminName;
+        this.adminPassword = adminPassword;
+        this.adminMailAddress = adminMailAddress;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // Supervisor role in addition to the ROLE_EMPLOYEE
+        return authorities;
     }
 
     @Override

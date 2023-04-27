@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface AttendanceRepository extends JpaRepository<Attendance, Integer> {
         Optional<Attendance> findByEmployeeIdAndAttendanceDate(Integer employeeId, LocalDate date);
 
-    List<Attendance> findByAttendanceDate(Date date);
+    List<Attendance> findByAttendanceDate(LocalDate attendanceDate);
 }
 
 

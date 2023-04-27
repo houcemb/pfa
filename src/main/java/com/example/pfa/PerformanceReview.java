@@ -1,8 +1,8 @@
 package com.example.pfa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-
 
 
 @Entity
@@ -12,6 +12,8 @@ public class PerformanceReview {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonBackReference
+
     @ManyToOne()
     private Employee employee;
 
@@ -21,26 +23,21 @@ public class PerformanceReview {
     private String department;
 
 
-    private String region;
-
-
     private String education;
 
 
     private String gender;
 
 
-    private String recruitmentChannel;
-
     public PerformanceReview(Long id, Employee employee, String employeeName, String department, String region, String education, String gender, String recruitmentChannel, Integer noOfTrainings, Integer age, Integer previousYearRating, Integer lengthOfService, Admin admin, Boolean awardsWon, Integer avgTrainingScore, SuperVisor supervisor) {
         this.id = id;
         this.employee = employee;
         this.employeeName = employeeName;
         this.department = department;
-        this.region = region;
+
         this.education = education;
         this.gender = gender;
-        this.recruitmentChannel = recruitmentChannel;
+
         this.noOfTrainings = noOfTrainings;
         this.age = age;
         this.previousYearRating = previousYearRating;
@@ -100,13 +97,6 @@ public class PerformanceReview {
         this.department = department;
     }
 
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
 
     public String getEducation() {
         return education;
@@ -124,13 +114,6 @@ public class PerformanceReview {
         this.gender = gender;
     }
 
-    public String getRecruitmentChannel() {
-        return recruitmentChannel;
-    }
-
-    public void setRecruitmentChannel(String recruitmentChannel) {
-        this.recruitmentChannel = recruitmentChannel;
-    }
 
     public Integer getNoOfTrainings() {
         return noOfTrainings;

@@ -1,16 +1,16 @@
 package com.example.pfa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
+
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Employee implements UserDetails {
     @Id
@@ -18,21 +18,26 @@ public class Employee implements UserDetails {
     private Integer employeeId;
     private String name;
     private String email;
+    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "supervisor_id")
+
     private SuperVisor supervisor;
     private String password;
     private Date hireDate;
     private Date terminationDate;
     private String department;
     private String postion;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Attendance> attendances;
-    @OneToMany(mappedBy = "employee")
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee")
     private List<PerformanceReview> performanceReviewList;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Payroll> payrollList;
-    @OneToMany(mappedBy = "employee")
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee")
     private List<Pto> ptoList;
 
     public double getBaseSalary() {
@@ -119,7 +124,12 @@ public class Employee implements UserDetails {
 
     public Employee() {
     }
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_EMPLOYEE")); // All employees have the ROLE_EMPLOYEE
+        return authorities;
+    }
     public Integer getId() {
         return employeeId;
     }
@@ -144,12 +154,13 @@ public class Employee implements UserDetails {
         this.email = email;
     }
 
-    @Override
-
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_EMPLOYEE"));
 
 
+
+    public Employee(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
     public String getPassword() {
@@ -217,4 +228,11 @@ public class Employee implements UserDetails {
         this.postion = postion;
     }
 
+    public void setSupervisor(SuperVisor supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public SuperVisor getSupervisor() {
+        return supervisor;
+    }
 }

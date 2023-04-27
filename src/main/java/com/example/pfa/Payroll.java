@@ -1,5 +1,6 @@
 package com.example.pfa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -84,6 +85,7 @@ public class Payroll {
         this.admin = admin;
         this.attendanceList = attendanceList;
     }
+    @JsonBackReference
 
     @ManyToOne
     private Employee employee;
@@ -142,7 +144,7 @@ public class Payroll {
         return salary;
     }
 
-    public static double calculateNetSalary(double grossSalary) {
+    public  double calculateNetSalary(double grossSalary) {
         // Calculate social security contributions
         double socialSecurity = grossSalary * 0.09;
 

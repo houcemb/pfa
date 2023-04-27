@@ -2,7 +2,6 @@ package com.example.pfa.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class AttendanceController {
         if (optionalAttendance.isPresent()) {
             // Update the exit time for the existing attendance record
             Date date = new Date();
-            LocalDate date1 =  LocalDate.now();
+       //     LocalDate date1 =  LocalDate.now();
 
             Attendance attendance = optionalAttendance.get();
             attendance.setOutTime(new Timestamp(date.getTime()));
@@ -59,7 +58,7 @@ public class AttendanceController {
         }
     }
 
-    public List<Attendance> getAttendanceByDate(Date date) {
+    public List<Attendance> getAttendanceByDate(LocalDate date) {
         return attendanceRepository.findByAttendanceDate(date);
     }
 

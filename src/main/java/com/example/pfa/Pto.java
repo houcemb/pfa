@@ -1,5 +1,6 @@
 package com.example.pfa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ public class Pto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer ptoId;
+    @JsonBackReference
     @ManyToOne
     private Employee employee;
     private String description;

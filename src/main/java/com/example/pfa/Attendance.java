@@ -1,5 +1,6 @@
 package com.example.pfa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -14,6 +15,8 @@ public class Attendance {
 
     private Timestamp inTime;
     private Timestamp outTime;
+    @JsonBackReference
+
     @ManyToOne
     private Employee employee;
 

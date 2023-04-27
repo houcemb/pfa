@@ -54,7 +54,8 @@ public class PayrollTest {
         double expectedSalary = 5000.0 - ((31-8-2)*8*hourRate) + (hourRate * 1.5 * 3.5) - (hourRate * 5);
 
         // Call the method being tested
-        double actualSalary = payroll.calculateSalary(startDate, endDate);
+        double grossSalary = payroll.calculateGrossSalary(startDate, endDate);
+        double actualSalary = payroll.calculateNetSalary(grossSalary);
 
         // Assert that the expected salary matches the actual salary
         assertEquals(5000, actualSalary, 0.001);
