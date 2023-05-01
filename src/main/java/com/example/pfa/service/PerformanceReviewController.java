@@ -1,4 +1,5 @@
 package com.example.pfa.service;
+
 import com.example.pfa.Employee;
 import com.example.pfa.SuperVisor;
 import com.example.pfa.repository.EmployeeRepository;
@@ -23,11 +24,13 @@ public class PerformanceReviewController {
     EmployeeRepository employeeRepository;
     @Autowired
     SupervisorRepository supervisorRepository;
+
     @GetMapping("/performance-reviews")
     public ResponseEntity<List<PerformanceReview>> getAllPerformanceReviews() {
         List<PerformanceReview> performanceReviews = performanceReviewRepository.findAll();
         return ResponseEntity.ok(performanceReviews);
     }
+
     @GetMapping("/performance-reviews/{reviewId}")
     public ResponseEntity<PerformanceReview> getPerformanceReviewById(@PathVariable Integer reviewId) {
         Optional<PerformanceReview> reviewOptional = performanceReviewRepository.findById(reviewId);
@@ -38,6 +41,7 @@ public class PerformanceReviewController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/employees/{employeeId}/performance-reviews")
     public ResponseEntity<List<PerformanceReview>> getAllPerformanceReviewsForEmployee(@PathVariable Integer employeeId) {
         Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
@@ -48,6 +52,7 @@ public class PerformanceReviewController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/{performanceReviewId}")
     public ResponseEntity<PerformanceReview> updatePerformanceReview(@PathVariable Integer performanceReviewId,
                                                                      @RequestBody PerformanceReview performanceReview) {
@@ -74,14 +79,37 @@ public class PerformanceReviewController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PostMapping("/employees/{employeeId}/supervisors/{supervisorId}/performance-reviews")
     public ResponseEntity<?> createPerformanceReview(@PathVariable Integer employeeId, @PathVariable Integer supervisorId, @RequestBody PerformanceReview performanceReview) throws Exception {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new Exception("Employee not found with id " + employeeId));
         SuperVisor supervisor = supervisorRepository.findById(supervisorId).orElseThrow(() -> new Exception("Supervisor not found with id " + supervisorId));
         performanceReview.setEmployee(employee);
         performanceReview.setSupervisor(supervisor);
-       performanceReviewRepository.save(performanceReview);
+        performanceReviewRepository.save(performanceReview);
         return new ResponseEntity<>("Supervisor registered successfully", HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{performanceReviewId}")
+    public ResponseEntity<?> deletePerformanceReview(@PathVariable Integer performanceReviewId) {
+        Optional<PerformanceReview> performanceReviewOptional = performanceReviewRepository.findById(performanceReviewId);
+        if (performanceReviewOptional.isPresent()) {
+            performanceReviewRepository.deleteById(performanceReviewId);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping ("/performanceReview/{supervisorID}")
+    public ResponseEntity<?> performanceReviewBySupervisor(@PathVariable Integer supervisorID) {
+        Optional<SuperVisor> supervisorOptional = supervisorRepository.findById(supervisorID);
+        if (supervisorOptional.isPresent()) {
+            SuperVisor supervisor = supervisorOptional.get();
+            List<Employee> employees = supervisor.getEmployees();
+            return ResponseEntity.ok(employees);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.pfa;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -19,12 +20,15 @@ public class Admin implements UserDetails {
     private String adminName;
     private String adminPassword;
     private String adminMailAddress;
+    //@JsonManagedReference
     @OneToMany(mappedBy = "admin")
 
 
     private List<TaxFormGeneration> taxFormGenera;
+    @JsonManagedReference(value = "admin-payroll")
     @OneToMany(mappedBy = "admin")
     private List<Payroll> payrollList;
+    @JsonManagedReference(value = "performance-admin")
     @OneToMany(mappedBy = "admin")
     private List<PerformanceReview> performance;
 

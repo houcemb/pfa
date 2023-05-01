@@ -21,8 +21,8 @@ public class AttendanceController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @PostMapping("/logEnter")
-    public void logEnter(@RequestParam("employeeId") int employeeId) {
+    @PostMapping("/logEnter/{employeeId}")
+    public void logEnter(@PathVariable Integer employeeId) {
         Attendance attendance = new Attendance();
 
         Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
@@ -36,8 +36,8 @@ public class AttendanceController {
         attendanceRepository.save(attendance);
     }
 
-    @PostMapping("/logExit")
-    public void logExit(int employeeId) {
+    @PostMapping("/logExit/{employeeId}")
+    public void logExit(@PathVariable Integer employeeId) {
         // Get the current date and time
         LocalDate now = LocalDate.now();
 
@@ -66,7 +66,13 @@ public class AttendanceController {
     public List<Attendance> list() {
         return attendanceRepository.findAll();
     }
+    @GetMapping("/employee/{employeeID}")
+        public List<Attendance> getEmployeeAttendance(@PathVariable Integer employeeID) {
+        Employee employee =employeeRepository.findById(employeeID).orElseThrow(()-> new RuntimeException("Employee not found"));
+        return employee.getAttendances();
+    }
 }
+
 
 
 

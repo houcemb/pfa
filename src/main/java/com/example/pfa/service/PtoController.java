@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,8 +21,8 @@ public class PtoController {
     EmployeeRepository employeeRepository;
     private Integer employeeID;
 
-    @PostMapping("/request")
-    public Pto ptoRequest(Integer employeeID , @RequestBody Pto pto) {
+    @PostMapping("/request/{employeeID}")
+    public Pto ptoRequest(@PathVariable Integer employeeID , @RequestBody Pto pto) {
 
         Optional<Employee> optionalEmployee = employeeRepository.findById(employeeID);
         Employee employee = optionalEmployee.orElseThrow(() -> new RuntimeException("Employee not found"));
@@ -45,6 +46,12 @@ public class PtoController {
         return ptoRepository.save(pto);
 
     }
+    @GetMapping("/employee/{employeeID}")
+    public List<Pto> getEmployeePto(@PathVariable Integer employeeID) {
+        Employee employee =employeeRepository.findById(employeeID).orElseThrow(()-> new RuntimeException("Employee not found"));
+      return employee.getPtoList();
+    }
+
 
 
 }

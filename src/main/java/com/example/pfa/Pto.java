@@ -11,7 +11,7 @@ public class Pto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer ptoId;
-    @JsonBackReference
+    //@JsonBackReference(value = "pto-employee")
     @ManyToOne
     private Employee employee;
     private String description;
@@ -27,6 +27,7 @@ public class Pto {
         this.status = status;
     }
 
+    //@JsonBackReference
     @ManyToOne
     Admin admin;
 
@@ -41,6 +42,7 @@ public class Pto {
         this.endDate = endDate;
         this.admin = admin;
     }
+
     public Pto(Integer ptoId, Employee employee, String description, Date startDate, Date endDate) {
         this.ptoId = ptoId;
         this.employee = employee;
@@ -49,6 +51,7 @@ public class Pto {
         this.endDate = endDate;
 
     }
+
     public Integer getPtoId() {
         return ptoId;
     }

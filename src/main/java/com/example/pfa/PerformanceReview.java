@@ -12,7 +12,8 @@ public class PerformanceReview {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @JsonBackReference
+
+    @JsonBackReference(value = "performance-employee")
 
     @ManyToOne()
     private Employee employee;
@@ -56,6 +57,7 @@ public class PerformanceReview {
 
 
     private Integer lengthOfService;
+    @JsonBackReference(value = "performance-admin")
     @ManyToOne
     private Admin admin;
 
@@ -171,6 +173,7 @@ public class PerformanceReview {
         this.supervisor = supervisor;
     }
 
+    @JsonBackReference(value = "performance-supervisor")
     @ManyToOne()
 
     private SuperVisor supervisor;

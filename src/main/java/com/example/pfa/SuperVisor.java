@@ -1,5 +1,6 @@
 package com.example.pfa;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,10 +11,13 @@ import java.util.*;
 
 @Entity
 public class SuperVisor extends Employee implements UserDetails {
+    @JsonManagedReference (value = "performance-supervisor")
+    @OneToMany(mappedBy = "supervisor",fetch = FetchType.EAGER)
+   private List<PerformanceReview> performanceReviewSupervisor;
 
-
-    public SuperVisor(String name, String email, String password) {
+    public SuperVisor(String name, String email, String password, List<PerformanceReview> performanceReviewSupervisor) {
         super(name, email, password);
+        this.performanceReviewSupervisor = performanceReviewSupervisor;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class SuperVisor extends Employee implements UserDetails {
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
-    @JsonManagedReference
+    @JsonManagedReference(value = "test")
 
     @OneToMany(mappedBy = "supervisor",fetch = FetchType.EAGER)
     private List<Employee> employees;

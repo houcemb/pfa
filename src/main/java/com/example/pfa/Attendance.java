@@ -1,6 +1,7 @@
 package com.example.pfa;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -15,7 +16,7 @@ public class Attendance {
 
     private Timestamp inTime;
     private Timestamp outTime;
-    @JsonBackReference
+    @JsonBackReference(value = "attendance-employee")
 
     @ManyToOne
     private Employee employee;
@@ -86,9 +87,10 @@ public class Attendance {
     public void setPayroll(Payroll payroll) {
         this.payroll = payroll;
     }
-
+//@JsonBackReference
     @ManyToOne
     private Admin admin;
+    @JsonBackReference(value = "attendance-payroll")
     @ManyToOne
     private Payroll payroll;
     public double getHoursWorked() {

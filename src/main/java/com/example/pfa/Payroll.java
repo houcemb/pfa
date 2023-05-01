@@ -1,6 +1,7 @@
 package com.example.pfa;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -85,15 +86,18 @@ public class Payroll {
         this.admin = admin;
         this.attendanceList = attendanceList;
     }
-    @JsonBackReference
+    @JsonBackReference("payroll")
 
     @ManyToOne
     private Employee employee;
     private Date dateOfPayroll;
     private double amount;
     private double taxes;
+    @JsonBackReference(value = "admin-payroll")
     @ManyToOne
     private Admin admin;
+
+    @JsonManagedReference("attendance-payroll")
     @OneToMany(mappedBy = "payroll")
     private List<Attendance> attendanceList;
 

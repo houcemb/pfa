@@ -18,7 +18,7 @@ public class Employee implements UserDetails {
     private Integer employeeId;
     private String name;
     private String email;
-    @JsonBackReference
+    @JsonBackReference(value = "test")
     @ManyToOne
 
     private SuperVisor supervisor;
@@ -27,16 +27,16 @@ public class Employee implements UserDetails {
     private Date terminationDate;
     private String department;
     private String postion;
-    @JsonManagedReference
+    @JsonManagedReference(value = "attendance-employee")
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Attendance> attendances;
-    @JsonManagedReference
+    @JsonManagedReference(value = "performance-employee")
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee")
     private List<PerformanceReview> performanceReviewList;
-    @JsonManagedReference
+    @JsonManagedReference(value = "-superpayroll")
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Payroll> payrollList;
-    @JsonManagedReference
+   // @JsonManagedReference(value = "pto-employee")
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "employee")
     private List<Pto> ptoList;
 
